@@ -6,7 +6,7 @@ np.random.seed(13)
 visited = np.zeros([N,N])
 path2 = np.zeros([N,N])
 percolating_cluster = np.zeros([N,N])
-p = 0.9
+p = float(input("Insert porosity"))
 grid = np.where(np.random.random([N,N]) < p, 0, 1)  # 0 is open path
 
 def percolating(x, y, startx, starty, path):
