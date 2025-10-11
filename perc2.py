@@ -11,7 +11,10 @@ grid = np.where(np.random.random([N,N]) < p, 0, 1)  # 0 is open path
 
 def percolating(x, y, startx, starty, path):
     global visited
-    if grid[x, y] == 1 or visited[x,y] == 1:
+    global path2
+    if x >= N or y >= N or x <= -1 or y <= 1:
+        return False
+    if grid[x, y] == 1 or visited[x,y] >= 1:
         # terminates this recursion
         visited = np.add(visited, path)
         path = np.zeros((N,N))
@@ -38,7 +41,7 @@ def percolating(x, y, startx, starty, path):
     # propose new positions:
     path[x,y] = 1
     # visited[x,y] = 1
-    return percolating(x +1 , y, startx, starty, path) or percolating(x - 1, y, startx, starty, path) or percolating(x , y+1, startx, starty, path) or percolating(x , y-1, startx, starty, path)
+    return percolating(x +1 , y, startx, starty, path) or percolating(x - 1, y, startx, starty, path) or percolating(x , y + 1, startx, starty, path) or percolating(x , y - 1, startx, starty, path)
 
 
 # Clelia's idea: making it flow, through the grid, basicly in the style of breadth first search.+
@@ -56,7 +59,7 @@ def finding_cluster():
             plt.imshow(path2)
             break
 finding_cluster()
-plt.imshow(visited)
+plt.imshow(path2)
 plt.colorbar()
 plt.show()
 # print(not 0)
