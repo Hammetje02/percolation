@@ -8,14 +8,16 @@ N = 100
 
 # Probability that a site is open
 p = 0.6  # You can change this value between 0 and 1
+np.random.seed(13)
 
+# grid = np.where(np.random.random((N,N)) < 0.6, 1, 0)
 # Initialize grid (all blocked initially)
 grid = np.zeros((N, N), dtype=int)  # 0 = blocked, 1 = open
 
 # Function to check percolation using DFS
 def percolates(grid):
     visited = np.zeros_like(grid, dtype=bool)
-    
+
     def dfs(x, y):
         if x < 0 or x >= N or y < 0 or y >= N:
             return False
@@ -25,7 +27,7 @@ def percolates(grid):
         if x == N-1:
             return True
         return (dfs(x+1, y) or dfs(x-1, y) or dfs(x, y+1) or dfs(x, y-1))
-    
+
     for col in range(N):
         if grid[0, col] and dfs(0, col):
             return True
