@@ -59,6 +59,7 @@ finding_cluster()
 plt.imshow(visited)
 plt.colorbar()
 plt.show()
+
 # print(not 0)
 
 # in mathematica it can be done with graph theory.
