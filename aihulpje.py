@@ -95,7 +95,7 @@ from collections import deque
 
 N = 500
 np.random.seed(13)
-p = 0.59  # around percolation threshold
+p = 0.6 # around percolation threshold
 
 # 0 = open, 1 = blocked
 grid = np.where(np.random.random([N, N]) < p, 0, 1)
