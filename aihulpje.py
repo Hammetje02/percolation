@@ -93,9 +93,13 @@ import numpy as np
 import matplotlib.pyplot as plt
 from collections import deque
 
-N = 500
+N = 1000
 np.random.seed(13)
+<<<<<<< Updated upstream
 p = 0.6 # around percolation threshold
+=======
+p = 0.6  # around percolation threshold
+>>>>>>> Stashed changes
 
 # 0 = open, 1 = blocked
 grid = np.where(np.random.random([N, N]) < p, 0, 1)
