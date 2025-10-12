@@ -1,13 +1,13 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-N = 1000
+N = 150
 np.random.seed(13)
 visited = np.zeros([N,N])
-path2 = np.zeros([N,N])
-percolating_cluster = np.zeros([N,N])
+# percolating_cluster = np.zeros([N,N])
+# path2 = np.zeros([N,N])
 # p = float(input("Insert porosity"))
-p = 0.6
+p = 0.59
 grid = np.where(np.random.random([N,N]) < p, 0, 1)  # 0 is open path
 # grid = grid + driehoek
 
@@ -16,31 +16,33 @@ def neighbours(coords, visited):
     x,y = coords
     nn_list = []
 
-    if (x+1) < N and not visited[x + 1, y] and not grid[x + 1, y]:
-        nn_list.append([x + 1, y])
+    if (x+1) < N and not visited[x + 1, y] and grid[x + 1, y] == 0:
         visited[x + 1, y] = 1
+        nn_list.append([x + 1, y])
     if (x-1) >= 0 and not visited[x - 1, y] and grid[x - 1, y] == 0:
-        nn_list.append([x - 1, y])
         visited[x - 1, y] = 1
-    if (y+1) < N and not visited[x, y + 1] and not grid[x, y + 1]:
-        nn_list.append([x, y + 1])
+        nn_list.append([x - 1, y])
+    if (y+1) < N and not visited[x, y + 1] and grid[x, y + 1] == 0:
         visited[x, y + 1] = 1
+        nn_list.append([x, y + 1])
     if (y-1) >= 0 and not visited[x, y - 1] and grid[x, y - 1] == 0:
-        nn_list.append([x, y - 1])
         visited[x, y - 1] = 1
+        nn_list.append([x, y - 1])
 
     return nn_list, visited
 
 
 def perc_condition(coords, startx, starty):
-    if coords[0] == N-1 and startx == 0:
+    x,y = coords
+    if startx == 0 and x == N-1:
         return True
-    if coords[1] == N-1 and starty == 0:
+    if starty == 0 and y== N-1:
         return True
-    # if coords[0] == 0 and startx == (N-1):
+    # if x == 0 and startx == N-1:
     #     return True
-    # if coords[1] == 0 and starty == (N-1):
+    # if y == 0 and starty == N-1:
     #     return True
+
     return False
 
 
@@ -55,14 +57,15 @@ def bfs(x, y, visited):
     Returns:
         boolean: _description_
     """
+    if grid[x,y] == 1 or visited[x,y] == 1:
+        return False
+
     queue = [[x,y]]
-    startx, starty = x, y
-
-
+    visited[x,y] = 1
     while queue:
         coords = queue.pop()
 
-        if perc_condition(coords, startx, starty):
+        if perc_condition(coords, x, y):
             return True
         nn_list, visited = neighbours(coords, visited)
 
@@ -84,9 +87,9 @@ def bfs_path(x, y, path):
     """
 
     queue = [[x,y]]
+    path[x,y] = 1
     while queue:
         coords = queue.pop()
-        # xp, yp = coords
         nn_list, path = neighbours(coords, path)
 
         for nn in nn_list:
@@ -96,25 +99,37 @@ def bfs_path(x, y, path):
 
 def finding_path(visited):
     for x in range(N):
-        if grid[x, 0] == 0 and bfs(x, 0, visited):
+        if bfs(x, 0, visited):
             # run cluster creator
             path = np.zeros_like(visited)
             path = bfs_path(x,0, path)
-            return path
+            return path, visited
 
     for y in range(N):
-        if grid[0, y] == 0 and bfs(0, y, visited):
+        # visited = np.zeros((N,N))
+        if bfs(0, y, visited):
             # run cluster creator
             path = np.zeros_like(visited)
-            path = bfs_path(x,0, path)
-            return path
-    return np.array([1]) # returns a 1d array with 1 element
+            path = bfs_path(0,y, path)
+            return path, visited
+
+    return np.array([1]), visited # returns a 1d array with 1 element if nothing found
 
 
-path = finding_path(visited)
+path, visited = finding_path(visited)
 # print(path.shape[0])
 if path.shape[0] != 1:
+    plt.title("percolating cluster")
     plt.imshow(path)
+    plt.colorbar()
+    plt.show()
+    plt.title("grid")
+    plt.imshow(visited)
+    plt.colorbar()
+    plt.show()
+else:
+    plt.title("all visited sites")
+    plt.imshow(visited)
     plt.colorbar()
     plt.show()
 

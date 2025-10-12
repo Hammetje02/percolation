@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-N = 1000
+N = 100
 np.random.seed(13)
 p = 0.6
 grid = np.where(np.random.random([N, N]) < p, 0, 1)  # 0 is open
