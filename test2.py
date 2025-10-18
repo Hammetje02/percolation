@@ -1,5 +1,2 @@
-queue = [[2,3]]
-# x,y = queue.pop()
-x,y = 2,3
-print(x)
-print(y)
+import numpy as np
+print(np.arange(0.45, 0.66, 0.01)[-2])

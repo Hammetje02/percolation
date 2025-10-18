@@ -2,12 +2,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 from collections import deque
 
-N = 200  # grid size (increase carefully if you want more precision)
+N = 200
 np.random.seed(13)
 
-# ==========================================================
-# --- BFS percolation function (non-recursive) ---
-# ==========================================================
 def bfs_percolate(grid, neighbor_offsets, direction="vertical"):
     N = grid.shape[0]
     visited = np.zeros_like(grid)

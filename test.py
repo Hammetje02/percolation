@@ -4,12 +4,9 @@ import matplotlib.pyplot as plt
 N = 150
 np.random.seed(13)
 visited = np.zeros([N,N])
-# percolating_cluster = np.zeros([N,N])
-# path2 = np.zeros([N,N])
 # p = float(input("Insert porosity"))
 p = 0.59
 grid = np.where(np.random.random([N,N]) < p, 0, 1)  # 0 is open path
-# grid = grid + driehoek
 
 def neighbours(coords, visited):
     global grid
@@ -117,20 +114,32 @@ def finding_path(visited):
 
 
 path, visited = finding_path(visited)
-# print(path.shape[0])
+
 if path.shape[0] != 1:
-    plt.title("percolating cluster")
-    plt.imshow(path)
-    plt.colorbar()
+    fig, ax = plt.subplots(1, 3, figsize=(14, 5))
+    ax[0].imshow(grid, cmap="gray_r")
+    ax[0].set_title("Grid")
+
+    ax[1].imshow(visited, cmap="viridis")
+    ax[1].set_title("Visited Sites")
+
+    ax[2].imshow(grid, cmap="gray_r")
+    ax[2].imshow(path, cmap="winter", alpha=0.6)
+    ax[2].set_title("Percolating Path (if found)")
+
     plt.show()
-    plt.title("grid")
-    plt.imshow(visited)
-    plt.colorbar()
-    plt.show()
+
 else:
-    plt.title("all visited sites")
-    plt.imshow(visited)
-    plt.colorbar()
+    fig, ax = plt.subplots(1, 3, figsize=(14, 5))
+    ax[0].imshow(grid, cmap="gray_r")
+    ax[0].set_title("Grid")
+
+    ax[1].imshow(visited, cmap="viridis")
+    ax[1].set_title("Visited Sites")
+
+    # plt.title("all visited sites")
+    # plt.imshow(visited)
+    # plt.colorbar()
     plt.show()
 
 # def percolating(x, y, startx, starty, path):
