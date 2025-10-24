@@ -1,8 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from collections import deque
 
-N = 600
+N = 500
 np.random.seed(13)
 
 
@@ -30,22 +29,22 @@ def neighbours_tetra(coords, visited, grid):
     x,y = coords
     nn_list = []
 
-    if (x+1) < N and not visited[x + 1, y] and grid[x + 1, y] == 0:
-        visited[x + 1, y] = 1
-        nn_list.append([x + 1, y])
-    if (x-1) >= 0 and not visited[x - 1, y] and grid[x - 1, y] == 0:
-        visited[x - 1, y] = 1
-        nn_list.append([x - 1, y])
-    if (y+1) < N and not visited[x, y + 1] and grid[x, y + 1] == 0:
-        visited[x, y + 1] = 1
-        nn_list.append([x, y + 1])
-    if (y-1) >= 0 and not visited[x, y - 1] and grid[x, y - 1] == 0:
-        visited[x, y - 1] = 1
-        nn_list.append([x, y - 1])
+    if (x+1) < N and (y+1) < N and not visited[x + 1, y+1] and grid[x + 1, y+1] == 0:
+        visited[x + 1, y+1] = 1
+        nn_list.append([x + 1, y+1])
+    if (x-1) >= 0 and (y-1) >= 0 and not visited[x - 1, y-1] and grid[x - 1, y-1] == 0:
+        visited[x - 1, y-1] = 1
+        nn_list.append([x - 1, y-1])
+    if (y+1) < N and (x-1) >= 0 and not visited[x-1, y + 1] and grid[x-1, y + 1] == 0:
+        visited[x-1, y + 1] = 1
+        nn_list.append([x-1, y + 1])
+    if (y-1) >= 0 and (x+1) < N and  not visited[x+1, y - 1] and grid[x+1, y - 1] == 0:
+        visited[x+1, y - 1] = 1
+        nn_list.append([x+1, y - 1])
     if (x+2) < N and not visited[x + 2, y] and grid[x + 2, y] == 0:
         visited[x + 2, y] = 1
         nn_list.append([x + 2, y])
-    if (x-2) < N and not visited[x - 2, y] and grid[x - 2, y] == 0:
+    if (x-2) >= 0 and not visited[x - 2, y] and grid[x - 2, y] == 0:
         visited[x - 2, y] = 1
         nn_list.append([x - 2, y])
 
@@ -54,7 +53,7 @@ def neighbours_tetra(coords, visited, grid):
 
 def perc_condition(coords, startx, starty):
     x,y = coords
-    
+
     if startx == 0 and x == N-1:
         return True
     if starty == 0 and y== N-1:
@@ -109,13 +108,22 @@ def bfs(x, y, visited, grid,mode=0):
 
 def finding_path(grid, visited, mode=0):
     N = grid.shape[0]
-    for x in range(N):
-        if bfs(x, 0, visited, grid, mode):
-            return True
+    if mode==0:
+        for x in range(N):
+            if bfs(x, 0, visited, grid, mode):
+                return True
 
-    for y in range(N):
-        if bfs(0, y, visited, grid, mode):
-            return True
+        for y in range(N):
+            if bfs(0, y, visited, grid, mode):
+                return True
+    else:
+        for x in range(0,N,2):
+            if bfs(x, 0, visited, grid, mode):
+                return True
+
+        for y in range(0,N,2):
+            if bfs(0, y, visited, grid, mode):
+                return True
     return False
 
 

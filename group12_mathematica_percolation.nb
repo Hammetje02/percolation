@@ -1,0 +1,293 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Wolfram 14.3' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       154,          7]
+NotebookDataLength[      9766,        285]
+NotebookOptionsPosition[      9350,        269]
+NotebookOutlinePosition[      9808,        287]
+CellTagsIndexPosition[      9765,        284]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"SeedRandom", "[", "13", "]"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"L", "=", "100"}], ";"}], "\[IndentingNewLine]", "\n", 
+  RowBox[{"(*", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"--", 
+      RowBox[{"-", "Grid"}]}], " ", 
+     RowBox[{"creation", "--"}]}], "-"}], "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"gridcreator", "[", "p_", "]"}], ":=", 
+    RowBox[{"Map", "[", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"Boole", "[", 
+        RowBox[{"#", "<", "p"}], "]"}], "&"}], ",", 
+      RowBox[{"RandomReal", "[", 
+       RowBox[{"1", ",", 
+        RowBox[{"{", 
+         RowBox[{"L", ",", "L"}], "}"}]}], "]"}], ",", 
+      RowBox[{"{", "2", "}"}]}], "]"}]}], ";"}], "\n"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Manipulate", "[", 
+   RowBox[{
+    RowBox[{"ArrayPlot", "[", 
+     RowBox[{
+      RowBox[{"gridcreator", "[", "p", "]"}], ",", 
+      RowBox[{"ColorRules", "->", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"0", "->", "Black"}], ",", 
+         RowBox[{"1", "->", "White"}], ",", 
+         RowBox[{"2", "->", "Purple"}]}], "}"}]}]}], "]"}], ",", 
+    RowBox[{"{", 
+     RowBox[{"p", ",", "0", ",", "1"}], "}"}]}], "]"}], "\n", 
+  "\[IndentingNewLine]", 
+  RowBox[{"(*", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"--", 
+      RowBox[{"-", "Initialize"}]}], " ", "grid", " ", "with", " ", "purple", 
+     " ", "top", " ", 
+     RowBox[{"row", "--"}]}], "-"}], "*)"}], "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"gridcreator3", "[", "p_", "]"}], ":=", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", "grid", "}"}], ",", 
+      RowBox[{
+       RowBox[{"grid", "=", 
+        RowBox[{"gridcreator", "[", "p", "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"grid", "[", 
+         RowBox[{"[", 
+          RowBox[{"1", ",", "All"}], "]"}], "]"}], "=", 
+        RowBox[{
+         RowBox[{"grid", "[", 
+          RowBox[{"[", 
+           RowBox[{"1", ",", "All"}], "]"}], "]"}], "/.", " ", 
+         RowBox[{"{", 
+          RowBox[{"1", "->", "2"}], "}"}]}]}], ";", "\[IndentingNewLine]", 
+       "grid"}]}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+  "\[IndentingNewLine]", 
+  RowBox[{"(*", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"--", 
+      RowBox[{"-", "Optimized"}]}], " ", "propagation", " ", 
+     RowBox[{"function", "--"}]}], "-"}], "*)"}]}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"func", "[", 
+     RowBox[{"{", 
+      RowBox[{"mat_", ",", "frontier_"}], "}"}], "]"}], ":=", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"grid", "=", "mat"}], ",", 
+        RowBox[{"newFrontier", "=", 
+         RowBox[{"{", "}"}]}], ",", "dirs", ",", "Lx", ",", "Ly"}], "}"}], ",", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"Lx", ",", "Ly"}], "}"}], "=", 
+        RowBox[{"Dimensions", "[", "grid", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"dirs", "=", 
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{"1", ",", "0"}], "}"}], ",", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"-", "1"}], ",", "0"}], "}"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"0", ",", "1"}], "}"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"0", ",", 
+            RowBox[{"-", "1"}]}], "}"}]}], "}"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"(*", 
+        RowBox[{
+         RowBox[{
+         "For", " ", "every", " ", "cell", " ", "in", " ", "current", " ", 
+          "frontier"}], ",", 
+         RowBox[{"spread", " ", "to", " ", "neighbors"}]}], "*)"}], 
+       RowBox[{"Do", "[", 
+        RowBox[{
+         RowBox[{"With", "[", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"x", "=", 
+              RowBox[{"pos", "[", 
+               RowBox[{"[", "1", "]"}], "]"}]}], ",", 
+             RowBox[{"y", "=", 
+              RowBox[{"pos", "[", 
+               RowBox[{"[", "2", "]"}], "]"}]}]}], "}"}], ",", 
+           RowBox[{"Do", "[", 
+            RowBox[{
+             RowBox[{"With", "[", 
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{
+                 RowBox[{"nx", "=", 
+                  RowBox[{"x", "+", 
+                   RowBox[{"d", "[", 
+                    RowBox[{"[", "1", "]"}], "]"}]}]}], ",", 
+                 RowBox[{"ny", "=", 
+                  RowBox[{"y", "+", 
+                   RowBox[{"d", "[", 
+                    RowBox[{"[", "2", "]"}], "]"}]}]}]}], "}"}], ",", 
+               RowBox[{"If", "[", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{"1", "<=", "nx", "<=", "Lx"}], "&&", 
+                  RowBox[{"1", "<=", "ny", "<=", "Ly"}], "&&", 
+                  RowBox[{
+                   RowBox[{"grid", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"nx", ",", "ny"}], "]"}], "]"}], "==", "1"}]}], ",", 
+                 RowBox[{
+                  RowBox[{
+                   RowBox[{"grid", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"nx", ",", "ny"}], "]"}], "]"}], "=", "2"}], ";", 
+                  "\[IndentingNewLine]", 
+                  RowBox[{"AppendTo", "[", 
+                   RowBox[{"newFrontier", ",", 
+                    RowBox[{"{", 
+                    RowBox[{"nx", ",", "ny"}], "}"}]}], "]"}]}]}], "]"}]}], 
+              "]"}], ",", 
+             RowBox[{"{", 
+              RowBox[{"d", ",", "dirs"}], "}"}]}], "]"}]}], "]"}], ",", 
+         RowBox[{"{", 
+          RowBox[{"pos", ",", "frontier"}], "}"}]}], "]"}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"{", 
+        RowBox[{"grid", ",", "newFrontier"}], "}"}]}]}], "]"}]}], ";"}], 
+  "\[IndentingNewLine]", "\[IndentingNewLine]", 
+  RowBox[{"(*", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"--", 
+      RowBox[{"-", "Repeat"}]}], " ", 
+     RowBox[{"function", "--"}]}], "-"}], "*)"}]}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"repeat", "[", 
+     RowBox[{"n_", ",", "p_"}], "]"}], ":=", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"grid", ",", "gridn", ",", "frontier"}], "}"}], ",", 
+      RowBox[{
+       RowBox[{"grid", "=", 
+        RowBox[{"gridcreator3", "[", "p", "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"frontier", "=", 
+        RowBox[{"Position", "[", 
+         RowBox[{"grid", ",", "2"}], "]"}]}], ";", 
+       RowBox[{"(*", 
+        RowBox[{"start", " ", "with", " ", "top", " ", "row"}], "*)"}], 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"gridn", "[", "1", "]"}], ",", "frontier"}], "}"}], "=", 
+        RowBox[{"func", "[", 
+         RowBox[{"{", 
+          RowBox[{"grid", ",", "frontier"}], "}"}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"gridn", "[", "i_", "]"}], ":=", 
+        RowBox[{"(", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"gridn", "[", "i", "]"}], ",", "frontier"}], "}"}], "=", 
+           RowBox[{"func", "[", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"gridn", "[", 
+               RowBox[{"i", "-", "1"}], "]"}], ",", "frontier"}], "}"}], 
+            "]"}]}], ";", 
+          RowBox[{"gridn", "[", "i", "]"}]}], ")"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"gridn", "[", "n", "]"}]}]}], "]"}]}], ";"}], 
+  "\[IndentingNewLine]", "\[IndentingNewLine]", 
+  RowBox[{"(*", 
+   RowBox[{
+    RowBox[{"--", 
+     RowBox[{"-", 
+      RowBox[{"Visualization", "--"}]}]}], "-"}], "*)"}]}], "\n", 
+ RowBox[{"Manipulate", "[", 
+  RowBox[{
+   RowBox[{"ArrayPlot", "[", 
+    RowBox[{
+     RowBox[{"repeat", "[", 
+      RowBox[{"n", ",", "p"}], "]"}], ",", 
+     RowBox[{"ColorRules", "->", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"0", "->", "Black"}], ",", 
+        RowBox[{"1", "->", "White"}], ",", 
+        RowBox[{"2", "->", "Purple"}]}], "}"}]}], ",", 
+     RowBox[{"ImageSize", "->", "300"}]}], "]"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"n", ",", "1", ",", "1000", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"p", ",", "0", ",", "1"}], "}"}]}], "]"}], "\n"}], "Input",
+ CellChangeTimes->{
+  3.9696857566914043`*^9, 3.9696858654167423`*^9, 3.969685924468727*^9, {
+   3.969685991474722*^9, 3.9696859977598515`*^9}, 3.9696863914554424`*^9, {
+   3.9697979396947174`*^9, 3.969797939780443*^9}, {3.9697981275963726`*^9, 
+   3.9697981276289673`*^9}, {3.9697981815805607`*^9, 3.969798192295252*^9}, {
+   3.969798347955124*^9, 3.9697983481869946`*^9}, {3.969798432985016*^9, 
+   3.9697984455983257`*^9}},
+ CellLabel->"In[1]:=",ExpressionUUID->"d74089f6-0f00-df43-a268-2ba19d0941be"]
+},
+WindowSize->{1440, 742.5},
+WindowMargins->{{-4.875, Automatic}, {Automatic, -4.875}},
+LightDark->"Dark",
+Magnification:>1.25 Inherited,
+FrontEndVersion->"14.3 for Microsoft Windows (64-bit) (July 8, 2025)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"2315a877-b1f8-fb4e-a9ae-92288312a22d"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[554, 20, 8792, 247, 748, "Input",ExpressionUUID->"d74089f6-0f00-df43-a268-2ba19d0941be"]
+}
+]
+*)
+

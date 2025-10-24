@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-N = 150
+N = 300
 np.random.seed(13)
 visited = np.zeros([N,N])
 # p = float(input("Insert porosity"))
@@ -103,7 +103,7 @@ def finding_path(visited):
             return path, visited
 
     for y in range(N):
-        # visited = np.zeros((N,N))
+
         if bfs(0, y, visited):
             # run cluster creator
             path = np.zeros_like(visited)
@@ -125,73 +125,17 @@ if path.shape[0] != 1:
 
     ax[2].imshow(grid, cmap="gray_r")
     ax[2].imshow(path, cmap="winter", alpha=0.6)
-    ax[2].set_title("Percolating Path (if found)")
+    ax[2].set_title("Percolating Path")
 
     plt.show()
 
 else:
-    fig, ax = plt.subplots(1, 3, figsize=(14, 5))
+    fig, ax = plt.subplots(1, 2, figsize=(14, 5))
     ax[0].imshow(grid, cmap="gray_r")
     ax[0].set_title("Grid")
 
     ax[1].imshow(visited, cmap="viridis")
     ax[1].set_title("Visited Sites")
 
-    # plt.title("all visited sites")
-    # plt.imshow(visited)
-    # plt.colorbar()
+
     plt.show()
-
-# def percolating(x, y, startx, starty, path):
-#     global visited
-#     global path2
-#     if x >= N or y >= N or x <= -1 or y <= 1:
-#         return False
-#     if grid[x, y] == 1 or visited[x,y] >= 1:
-#         # terminates this recursion
-#         visited = np.add(visited, path)
-#         path = np.zeros((N,N))
-#         print("a")
-#         return False
-#     # the path can be taken so take the step
-#     visited[x,y] = 1
-#     # horizontal cluster
-#     if (x == (N-1) and startx == 0) or (x == 0 and startx == (N-1)) :
-#         # return coordinates to make in another function the coordinates which belong to percolating cluster
-#         #return cluster, ensure that you do not make to many clusters
-#         path[x,y] = 1
-#         path2[x,y] = 1
-#         print("b")
-#         return True
-#     #verical cluster
-#     if (y == (N-1) and starty == 0) or (y == 0 and starty == (N-1)) :
-#         # return coordinates to make in another function the coordinates which belong to percolating cluster
-#         path[x,y] = 1
-#         path2 = path[x,y]
-#         print("c")
-#         return True
-
-#     # propose new positions:
-#     path[x,y] = 1
-#     # visited[x,y] = 1
-#     return percolating(x +1 , y, startx, starty, path) or percolating(x - 1, y, startx, starty, path) or percolating(x , y + 1, startx, starty, path) or percolating(x , y - 1, startx, starty, path)
-
-
-# # Clelia's idea: making it flow, through the grid, basicly in the style of breadth first search.+
-# def finding_cluster():
-#     path = np.zeros([N,N])
-#     for x in range(N):
-#         print(percolating(x,0, x,0, path))
-#         if percolating(x,0, x,0, path):
-#             print("found")
-#             plt.imshow(path2)
-#             break
-#     for y in range(N):
-#         if percolating(0,y, 0, y, path):
-#             print("found")
-#             plt.imshow(path2)
-#             break
-# finding_cluster()
-# plt.imshow(path2)
-# plt.colorbar()
-# plt.show()
